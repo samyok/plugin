@@ -1,0 +1,7 @@
+{
+  "name": "samyok",
+  "version": "0.1.0",
+  "description": "How Samyok wants Devin sessions to work: small diffs, few tests, mergeable PRs, visual evidence, explainers, delegation, wildcard network access, feature flags",
+  "author": { "name": "Samyok Nepal", "email": "samyok@cognition.ai" },
+  "keywords": ["devin", "plugin", "skills", "workflow"]
+}
