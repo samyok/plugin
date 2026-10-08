@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// Validates the structure of every plugin under plugins/.
+// Validates the structure of the plugin at the repo root.
 // Run: node scripts/validate-plugins.mjs
 
 import { readdirSync, readFileSync, existsSync, statSync } from "node:fs";
@@ -7,7 +7,6 @@ import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
-const pluginsDir = join(root, "plugins");
 
 const errors = [];
 const kebab = /^[a-z0-9]+(-[a-z0-9]+)*$/;
@@ -58,48 +57,30 @@ function checkSkillLike(dir, kind) {
   }
 }
 
-if (!existsSync(pluginsDir)) {
-  fail("plugins/ directory not found");
+const manifestPath = join(root, ".devin-plugin", "plugin.json");
+if (!existsSync(manifestPath)) {
+  fail("missing .devin-plugin/plugin.json at the repo root");
 } else {
-  const names = new Set();
-  for (const entry of readdirSync(pluginsDir)) {
-    const dir = join(pluginsDir, entry);
-    if (!statSync(dir).isDirectory()) continue;
-
-    const manifestPath = join(dir, ".devin-plugin", "plugin.json");
-    const label = `plugins/${entry}`;
-    if (!existsSync(manifestPath)) {
-      fail(`${label}: missing .devin-plugin/plugin.json`);
-      continue;
-    }
-    const manifest = parseJson(manifestPath, `${label}/.devin-plugin/plugin.json`);
-    if (!manifest) continue;
-
-    if (!manifest.name) fail(`${label}: manifest missing "name"`);
-    else {
-      if (!kebab.test(manifest.name))
-        fail(`${label}: name "${manifest.name}" must be lowercase kebab-case`);
-      if (names.has(manifest.name)) fail(`${label}: duplicate plugin name "${manifest.name}"`);
-      names.add(manifest.name);
-      if (manifest.name !== entry)
-        fail(`${label}: manifest name "${manifest.name}" should match directory "${entry}"`);
-    }
+  const manifest = parseJson(manifestPath, ".devin-plugin/plugin.json");
+  if (manifest) {
+    if (!manifest.name) fail('manifest missing "name"');
+    else if (!kebab.test(manifest.name))
+      fail(`name "${manifest.name}" must be lowercase kebab-case`);
     if (manifest.version && !/^\d+\.\d+\.\d+([-+].*)?$/.test(manifest.version))
-      fail(`${label}: version "${manifest.version}" is not semver`);
+      fail(`version "${manifest.version}" is not semver`);
     for (const list of ["requiredPlugins", "optionalPlugins", "forbiddenPlugins"]) {
       if (manifest[list] !== undefined && !Array.isArray(manifest[list]))
-        fail(`${label}: "${list}" must be an array`);
-    }
-
-    checkSkillLike(join(dir, "skills"), "skill");
-    checkSkillLike(join(dir, "agents"), "agent");
-
-    for (const file of ["hooks.json", "mcp_config.json"]) {
-      const p = join(dir, file);
-      if (existsSync(p)) parseJson(p, `${label}/${file}`);
+        fail(`"${list}" must be an array`);
     }
   }
-  if (names.size === 0) fail("no plugins found under plugins/");
+
+  checkSkillLike(join(root, "skills"), "skill");
+  checkSkillLike(join(root, "agents"), "agent");
+
+  for (const file of ["hooks.json", "mcp_config.json"]) {
+    const p = join(root, file);
+    if (existsSync(p)) parseJson(p, file);
+  }
 }
 
 if (errors.length) {

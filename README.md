@@ -1,6 +1,6 @@
 # plugin
 
-Samyok's Devin plugins, in the [Devin plugin template](https://github.com/CognitionAI/plugin-template) layout: one plugin per folder under `plugins/`, each with a `.devin-plugin/plugin.json` manifest.
+Samyok's Devin plugin. The plugin lives at the repo root: `.devin-plugin/plugin.json` is the manifest and `skills/` holds the skills, so the repo URL installs directly.
 
 ## `samyok`
 
@@ -20,7 +20,7 @@ Skills compiled from instructions Samyok repeatedly gives Devin sessions. Each s
 ## Install
 
 ```bash
-devin plugins install "https://github.com/samyok/plugin.git#plugins/samyok"
+devin plugins install "https://github.com/samyok/plugin.git"
 ```
 
 ## Validate
