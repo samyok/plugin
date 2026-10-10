@@ -16,7 +16,7 @@ function esc(s){return String(s)}
 function wrap(t,n){const w=String(t).split(' ');const out=[];let cur='';for(const x of w){if((cur+' '+x).trim().length>n){out.push(cur.trim());cur=x}else cur+=' '+x}if(cur.trim())out.push(cur.trim());return out}
 const clamp=x=>Math.max(0,Math.min(1,x));const ease=x=>x<.5?2*x*x:1-Math.pow(-2*x+2,2)/2;
 let V, flat=[];
-function load(){V=window.VIDEO;Object.assign(C,V.palette||{});V.chapters.forEach((ch,ci)=>ch.beats.forEach((b,bi)=>flat.push({ch:ci,bi,b})));window.__beats=flat.map(f=>({anim:!!(f.b.anim)}));window.__duration=flat.length*BEAT}
+function load(){V=window.VIDEO;Object.assign(C,V.palette||{});V.chapters.forEach((ch,ci)=>ch.beats.forEach((b,bi)=>flat.push({ch:ci,bi,b})));window.__beats=flat.map(f=>({anim:!!(f.b.anim)}));window.__timing={BEAT,TR};window.__duration=flat.length*BEAT}
 const svg=document.getElementById('s');
 function drawEl(e,g,st){ // st: {alpha, cur, beat}
   const c=col(e.color);
@@ -75,7 +75,7 @@ function render(t){
   const h=el('text',{x:64,y:72,fill:C.mute,'font-size':20,class:'mono','letter-spacing':'.12em'},svg);h.textContent=V.title.toUpperCase();
   const h2=el('text',{x:64,y:118,fill:C.ink,'font-size':38,'font-weight':700},svg);h2.textContent=`${String(F.ch+1).padStart(2,'0')} — ${ch.title}`;
   // element state
-  const added={};const barState={};
+  const added=Object.create(null);const barState={};
   for(let i=0;i<=F.bi;i++){const b=ch.beats[i];(b.add||[]).forEach(id=>{if(!(id in added))added[id]=i});(b.remove||[]).forEach(id=>delete added[id]);if(b.anim&&i<F.bi)barState[b.anim.id]=b.anim.to;(b.set||[]).forEach(s=>barState[s.id]=s.v)}
   const b=F.b;const cur=new Set([...(b.add||[]),...(b.hl||[]),...(b.json?[b.json.id]:[]),...(b.anim?[b.anim.id]:[]),...(b.idx?[b.idx.id]:[])]);
   const prev=gi>0&&flat[gi-1].ch===F.ch?new Set([...(flat[gi-1].b.add||[]),...(flat[gi-1].b.hl||[]),...(flat[gi-1].b.json?[flat[gi-1].b.json.id]:[]),...(flat[gi-1].b.anim?[flat[gi-1].b.anim.id]:[]),...(flat[gi-1].b.idx?[flat[gi-1].b.idx.id]:[])]):new Set();
