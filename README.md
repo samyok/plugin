@@ -12,7 +12,7 @@ Skills compiled from instructions Samyok repeatedly gives Devin sessions. Each s
 | `show-me-the-ui` | Any visible change; "show me", "send me a screenshot", "attach a video" |
 | `pr-ready-for-samyok` | Opening, updating or handing off a PR; conflicts, review comments, CI |
 | `wildcard-network-access` | A network-restricted session needs hosts outside the allowlist |
-| `explain-it-to-me` | "teach me about", "explain in simple terms", "generate an explainer video" |
+| `explain-it-to-me` | "teach me about", "explain in simple terms", "generate an explainer video" (includes the video engine in `video/`) |
 | `coordinator-delegate-everything` | Coordinator sessions only: delegate work to children, clean up the board |
 | `cut-low-value-tests` | A PR adds or changes tests; "get rid of stupid tests", "don't add tests" |
 | `ship-behind-a-flag` | New user-visible feature or redesign; when to add a flag and when not to |
