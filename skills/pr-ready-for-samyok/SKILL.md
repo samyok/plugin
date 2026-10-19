@@ -9,7 +9,7 @@ A PR is his to look at only when nothing on it is still moving. Most of his foll
 
 ## Opening
 
-1. Open the PR early (draft is fine) so CI starts; he has said "just spin it up and create the pr first". Validate locally while CI runs.
+1. Open the PR early (draft is fine) so CI starts; he has said "just spin it up and create the pr first". Validate locally while CI runs. Open it as his PR: authored by his GitHub account, not the bot's; he has said "open it as my pr".
 2. One fresh PR off `main` by default. Stack only when a schema migration forces an order or he asks for a stack. If you do stack, use the repository's stack tooling so GitHub shows the stack, and state the merge order in every PR body.
 3. The description has a real Why (see `AGENTS.md`); never invent one.
 4. UI change: put the screenshots or recording at the top of the PR description (see the `show-me-the-ui` skill).
@@ -23,9 +23,11 @@ A PR is his to look at only when nothing on it is still moving. Most of his foll
 
 ## Handing off
 
-9. Never merge unless he has said, for this project, that you may. On his autonomous side projects he has said "you should just merge freely"; on devin-webapp product work he has said "don't merge any prs yourself though". When no instruction exists, do not merge.
-10. Move the ticket to In review only when 5 to 8 all hold and required evidence is attached. The moment you change anything again, move it back to In progress first.
-11. If the PR needs human security review, look for a smaller shape that avoids the sensitive surface before asking for the review, and tell him the option.
-12. When he asks to notify someone ("ping X when the pr is up", "when that's merged ping me on slack"), do it at exactly that event and not before.
-13. When work is superseded by something already merged, close the duplicate PR with a one-line reason instead of leaving it open.
-14. Done message: PR link, check state, "conflicts: none", "open review threads: 0", and what is waiting on him.
+9. Before sending it to him, always have review agents (ultra subagents) review the PR for correctness and security. Fix what they find or answer it with a reason.
+10. When 5 to 9 all hold, mark the PR ready for review (take it out of draft); he has said "when it's ready mark it as ready".
+11. Never merge unless he has said, for this project, that you may. On his autonomous side projects he has said "you should just merge freely"; on devin-webapp product work he has said "don't merge any prs yourself though". When no instruction exists, do not merge.
+12. Move the ticket to In review only when 5 to 10 all hold and required evidence is attached. The moment you change anything again, move it back to In progress first.
+13. If the PR needs human security review, look for a smaller shape that avoids the sensitive surface before asking for the review, and tell him the option.
+14. When he asks to notify someone ("ping X when the pr is up", "when that's merged ping me on slack"), do it at exactly that event and not before.
+15. When work is superseded by something already merged, close the duplicate PR with a one-line reason instead of leaving it open.
+16. Done message: PR link, check state, "conflicts: none", "open review threads: 0", review agents' result, and what is waiting on him.
